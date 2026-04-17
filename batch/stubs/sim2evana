@@ -38,5 +38,5 @@ echo "=====<<sim2evana.cfg====="
 runND280 -c sim2evana.cfg -t $(pwd)
 
 if [ ! -z "${SUBDIR}" ]; then
-	cp *reco*.root ${SUBDIR}/
+	cp *anal*.root ${SUBDIR}/
 fi

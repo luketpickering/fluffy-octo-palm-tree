@@ -7,6 +7,14 @@ FLUX_FILE=${4}
 MAXINT_FILE=${5}
 POT=${6}
 
+RUNNUM=${SLURM_JOB_ID}
+SRUNNUM=${SLURM_LOCALID}
+COMMENT=""
+
+if [ ${#} -gt 6 ]; then
+  COMMENT=${7}
+fi
+
 SEEDS=( $(${MYWORK4}/nd280/scripts/batch/utils/rseeds.py 65534 3) )
 NEUT_SEED1=${SEEDS[0]}
 NEUT_SEED2=${SEEDS[1]}
@@ -22,6 +30,9 @@ cat $MYWORK4/nd280/inputs/runND280cfg/numc.cfg.in \
 	| sed "s:__NEUT_SEED2__:${NEUT_SEED2}:g" \
 	| sed "s:__NEUT_SEED3__:${NEUT_SEED3}:g" \
 	| sed "s:__POT__:${POT}:g" \
+	| sed "s:__RUNNUM__:${RUNNUM}:g" \
+	| sed "s:__SRUNNUM__:${SRUNNUM}:g" \
+	| sed "s:__COMMENT__:${COMMENT}:g" \
 	> numc.cfg
 
 echo "=====>>numc.cfg====="

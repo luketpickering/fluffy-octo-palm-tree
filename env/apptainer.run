@@ -5,10 +5,17 @@ if [ ! -z "${ND280_IMAGE}" ]; then
 fi
 
 if [ ! -z "${JOBDIR}" ]; then
+
+  CWDOPT=${JOBDIR}
+  if [ ! -z "${SLURM_LOCALID}" ]; then
+    CWDOPT=${JOBDIR}/task_${SLURM_LOCALID}
+    mkdir -p ${CWDOPT}
+  fi
+
   apptainer run \
 	-B /work4:/work4 \
 	-B /scratch:/scratch \
-	--cwd ${JOBDIR} \
+	--cwd ${CWDOPT} \
 	${IMG} \
 		$MYWORK4/nd280/scripts/env/apptainer.run_in_local_nd280_env ${@}
 else

@@ -3,30 +3,37 @@
 #SBATCH -p scarf
 #SBATCH -n 1
 #SBATCH -o %J.log
-#SBATCH -e %J.err
 #SBATCH -J nd280job
 
 if [ -z "${SLURM_JOB_ACCOUNT}" ]; then
 	SLURM_JOB_ACCOUNT=ppd
 	SLURM_JOB_NAME=test
 	SLURM_JOB_ID=22072207
+	SLURM_LOCALID=123
 fi
 
 export SUBDIR=$(pwd)
-export JOBDIR=/tmp/${SLURM_JOB_ACCOUNT}_${SLURM_JOB_NAME}_${SLURM_JOB_ID}
 
-JSTARTS=$(date +%s)
-echo "Job start:  $(date)"
+if [ -e /scratch ]; then
+  export JOBDIR=/scratch/picker24/${SLURM_JOB_ACCOUNT}_${SLURM_JOB_NAME}_${SLURM_JOB_ID}
+else
+  export JOBDIR=/tmp/${SLURM_JOB_ACCOUNT}_${SLURM_JOB_NAME}_${SLURM_JOB_ID}
+fi
+
+SECONDS=0
+echo "Job start: $(date)"
 
 set -x
-mkdir ${JOBDIR}
+mkdir -p ${JOBDIR}
 set +x
 
-srun time $MYWORK4/nd280/scripts/env/apptainer.run ${@}
+JOB_SCRIPT=$(readlink -f ${1})
+shift;
+
+srun -o "%j.%t.log"  time $MYWORK4/nd280/scripts/env/apptainer.run ${JOB_SCRIPT} ${@}
 
 set -x
-ls ${JOBDIR}
+ls ${JOBDIR}/*
 rm -r ${JOBDIR}
 echo "Job end: $(date)"
-JENDS=$(date +%s)
-echo "Job elapsed: $((JENDS - JSTARS))s"
+echo "Job elapsed: ${SECONDS}s"
