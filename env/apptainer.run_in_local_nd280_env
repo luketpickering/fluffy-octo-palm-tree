@@ -1,0 +1,3 @@
+#!/bin/bash
+. /work4/ppd/picker24/nd280/picker24local/nd280.env
+${@}

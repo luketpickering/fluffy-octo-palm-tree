@@ -1,0 +1,2 @@
+echo "NEUT_ROOT: ${NEUT_ROOT}"
+echo "NEUT_CRSPATH: ${NEUT_CRSPATH}"

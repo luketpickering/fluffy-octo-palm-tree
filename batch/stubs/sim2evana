@@ -1,0 +1,42 @@
+#!/bin/bash
+
+NEUT_CARD=${1}
+NUMC_FILE=${2}
+MAXINT_FILE=${3}
+BEAM_POWER=${4}
+CYCLE_TIME=${5}
+
+SEEDS=( $(${MYWORK4}/nd280/scripts/batch/utils/rseeds.py 65534 5) )
+NEUT_SEED1=${SEEDS[0]}
+NEUT_SEED2=${SEEDS[1]}
+NEUT_SEED3=${SEEDS[2]}
+G4_SEED=${SEEDS[3]}
+ELECSIM_SEED=${SEEDS[4]}
+
+${MYWORK4}/nd280/scripts/utils/ips.py -i ${MAXINT_FILE} -p ${BEAM_POWER} -t ${CYCLE_TIME} > pps.dat
+PPS=$(head -1 pps.dat)
+IPS=$(tail -1 pps.dat)
+rm pps.dat
+
+cat ${MYWORK4}/nd280/inputs/runND280cfg/sim2evana.cfg.in \
+	| sed "s:__NEUT_CARD__:${NEUT_CARD}:g" \
+	| sed "s:__NUMC_FILE__:${NUMC_FILE}:g" \
+	| sed "s:__NEUT_SEED1__:${NEUT_SEED1}:g" \
+	| sed "s:__NEUT_SEED2__:${NEUT_SEED2}:g" \
+	| sed "s:__NEUT_SEED3__:${NEUT_SEED3}:g" \
+	| sed "s:__MAXINT_FILE__:${MAXINT_FILE}:g" \
+	| sed "s:__G4_SEED__:${G4_SEED}:g" \
+	| sed "s:__ELECSIM_SEED__:${ELECSIM_SEED}:g" \
+	| sed "s:__IPS__:${IPS}:g" \
+	| sed "s:__PPS__:${PPS}:g" \
+	> sim2evana.cfg
+
+echo "=====>>sim2evana.cfg====="
+cat sim2evana.cfg
+echo "=====<<sim2evana.cfg====="
+
+runND280 -c sim2evana.cfg -t $(pwd)
+
+if [ ! -z "${SUBDIR}" ]; then
+	cp *reco*.root ${SUBDIR}/
+fi

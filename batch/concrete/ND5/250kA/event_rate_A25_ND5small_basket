@@ -1,0 +1,9 @@
+#!/bin/bash
+
+source /work4/ppd/picker24/nd280/scripts/batch/utils/deploy-A25-tensors
+
+/work4/ppd/picker24/nd280/scripts/batch/stubs/event_rate \
+	/work4/ppd/picker24/nd280/inputs/neut_cards/NIWG_A25-lowmem.toml \
+	Basket basket \
+	/work4/ppd/picker24/nd280/inputs/fluxes/newtargetmc_run12nominal_sd05186038_rn001_noname_bch1.root \
+	/work4/ppd/picker24/nd280/inputs/maxint/ND5.250kA.small-A25-basket.maxint.root

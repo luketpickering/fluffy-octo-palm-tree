@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo $(find . -name "*numc*.root" -not -name "*.geo.root")

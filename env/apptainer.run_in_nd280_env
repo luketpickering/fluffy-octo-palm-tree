@@ -1,0 +1,3 @@
+#!/bin/bash
+. $MYWORK4/nd280/scripts/env/nd280.env
+${@}

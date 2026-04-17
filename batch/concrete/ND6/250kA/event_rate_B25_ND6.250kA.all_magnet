@@ -1,0 +1,7 @@
+#!/bin/bash
+
+/work4/ppd/picker24/nd280/scripts/batch/stubs/event_rate \
+	/work4/ppd/picker24/nd280/inputs/neut_cards/NIWG_B25.toml \
+	Magnet magnet \
+	/work4/ppd/picker24/nd280/inputs/fluxes/ND6.250kA.all.root \
+	/work4/ppd/picker24/nd280/inputs/maxint/ND6.250kA.all-B25-magnet.maxint.root

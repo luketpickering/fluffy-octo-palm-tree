@@ -1,0 +1,10 @@
+if [ ! -z "${NEUT_CRSPATH}" ] && [ ! -e crsdat ]; then
+  cp -r ${NEUT_CRSPATH} ./
+  export NEUT_CRSPATH=$(readlink -f crsdat)
+  mkdir -p ${NEUT_CRSPATH}/rmfData/
+  cp -r $MYWORK4/nd280/inputs/tensors/* ${NEUT_CRSPATH}/rmfData/tensors/
+fi
+
+if [ -e crsdat ]; then
+  export NEUT_CRSPATH=$(readlink -f crsdat)
+fi

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#SBATCH -p scarf
+#SBATCH -n 1
+#SBATCH -o %J.log
+#SBATCH -e %J.err
+#SBATCH -J nd280job
+
+if [ -z "${SLURM_JOB_ACCOUNT}" ]; then
+	SLURM_JOB_ACCOUNT=ppd
+	SLURM_JOB_NAME=test
+	SLURM_JOB_ID=22072207
+fi
+
+export SUBDIR=$(pwd)
+export JOBDIR=/tmp/${SLURM_JOB_ACCOUNT}_${SLURM_JOB_NAME}_${SLURM_JOB_ID}
+
+JSTARTS=$(date +%s)
+echo "Job start:  $(date)"
+
+set -x
+mkdir ${JOBDIR}
+set +x
+
+srun time $MYWORK4/nd280/scripts/env/apptainer.run ${@}
+
+set -x
+ls ${JOBDIR}
+rm -r ${JOBDIR}
+echo "Job end: $(date)"
+JENDS=$(date +%s)
+echo "Job elapsed: $((JENDS - JSTARS))s"

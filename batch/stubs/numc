@@ -1,0 +1,35 @@
+#!/bin/bash
+
+NEUT_CARD=${1}
+INT_REGION=${2}
+FLUX_REGION=${3}
+FLUX_FILE=${4}
+MAXINT_FILE=${5}
+POT=${6}
+
+SEEDS=( $(${MYWORK4}/nd280/scripts/batch/utils/rseeds.py 65534 3) )
+NEUT_SEED1=${SEEDS[0]}
+NEUT_SEED2=${SEEDS[1]}
+NEUT_SEED3=${SEEDS[2]}
+
+cat $MYWORK4/nd280/inputs/runND280cfg/numc.cfg.in \
+	| sed "s:__NEUT_CARD__:${NEUT_CARD}:g" \
+	| sed "s:__INT_REGION__:${INT_REGION}:g" \
+	| sed "s:__FLUX_REGION__:${FLUX_REGION}:g" \
+	| sed "s:__FLUX_FILE__:${FLUX_FILE}:g" \
+	| sed "s:__MAXINT_FILE__:${MAXINT_FILE}:g" \
+	| sed "s:__NEUT_SEED1__:${NEUT_SEED1}:g" \
+	| sed "s:__NEUT_SEED2__:${NEUT_SEED2}:g" \
+	| sed "s:__NEUT_SEED3__:${NEUT_SEED3}:g" \
+	| sed "s:__POT__:${POT}:g" \
+	> numc.cfg
+
+echo "=====>>numc.cfg====="
+cat numc.cfg
+echo "=====<<numc.cfg====="
+
+runND280 -c numc.cfg -t $(pwd)
+
+if [ ! -z "${SUBDIR}" ]; then
+	cp $(${MYWORK4}/nd280/scripts/batch/utils/findnumc) ${SUBDIR}/
+fi

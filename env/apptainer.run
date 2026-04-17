@@ -1,0 +1,20 @@
+#!/bin/bash
+IMG=$MYWORK4/nd280/images/buildbox_alma9.sif
+if [ ! -z "${ND280_IMAGE}" ]; then
+  IMG=${ND280_IMAGE}
+fi
+
+if [ ! -z "${JOBDIR}" ]; then
+  apptainer run \
+	-B /work4:/work4 \
+	-B /scratch:/scratch \
+	--cwd ${JOBDIR} \
+	${IMG} \
+		$MYWORK4/nd280/scripts/env/apptainer.run_in_local_nd280_env ${@}
+else
+  apptainer run \
+	-B /work4:/work4 \
+	-B /scratch:/scratch \
+	${IMG} \
+		$MYWORK4/nd280/scripts/env/apptainer.run_in_local_nd280_env ${@}
+fi

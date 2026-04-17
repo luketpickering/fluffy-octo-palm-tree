@@ -1,0 +1,21 @@
+#!/bin/bash
+
+NEUT_CARD=${1}
+INT_REGION=${2}
+FLUX_REGION=${3}
+FLUX_FILE=${4}
+MAXINT_OUTPUT=${5}
+
+cat $MYWORK4/nd280/inputs/runND280cfg/setupNEUT.cfg.in \
+	| sed "s:__NEUT_CARD__:${NEUT_CARD}:g" \
+	| sed "s:__INT_REGION__:${INT_REGION}:g" \
+	| sed "s:__FLUX_REGION__:${FLUX_REGION}:g" \
+	| sed "s:__FLUX_FILE__:${FLUX_FILE}:g" \
+	| sed "s:__MAXINT_FILE__:${MAXINT_OUTPUT}:g" \
+	> setupNEUT.cfg
+
+echo "=====>>setupNEUT.cfg====="
+cat setupNEUT.cfg
+echo "=====<<setupNEUT.cfg====="
+
+runND280 -c setupNEUT.cfg
