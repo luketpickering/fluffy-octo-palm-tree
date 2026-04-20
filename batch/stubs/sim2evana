@@ -6,14 +6,14 @@ MAXINT_FILE=${3}
 BEAM_POWER=${4}
 CYCLE_TIME=${5}
 
-SEEDS=( $(${MYWORK4}/nd280/scripts/batch/utils/rseeds.py 65534 5) )
+SEEDS=( $(${SCRIPT_ROOT}/batch/utils/rseeds.py 65534 5) )
 NEUT_SEED1=${SEEDS[0]}
 NEUT_SEED2=${SEEDS[1]}
 NEUT_SEED3=${SEEDS[2]}
 G4_SEED=${SEEDS[3]}
 ELECSIM_SEED=${SEEDS[4]}
 
-${MYWORK4}/nd280/scripts/utils/ips.py -i ${MAXINT_FILE} -p ${BEAM_POWER} -t ${CYCLE_TIME} > pps.dat
+${SCRIPT_ROOT}/utils/ips.py -i ${MAXINT_FILE} -p ${BEAM_POWER} -t ${CYCLE_TIME} > pps.dat
 PPS=$(head -1 pps.dat)
 IPS=$(tail -1 pps.dat)
 rm pps.dat
@@ -39,4 +39,5 @@ runND280 -c sim2evana.cfg -t $(pwd)
 
 if [ ! -z "${SUBDIR}" ]; then
 	cp *anal*.root ${SUBDIR}/
+#	cp *g4mc*.mac ${SUBDIR}/
 fi

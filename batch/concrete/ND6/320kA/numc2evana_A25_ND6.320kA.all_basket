@@ -13,7 +13,7 @@ CYCLE_TIME=1.52
         Basket magnet \
         /work4/ppd/picker24/nd280/inputs/fluxes/ND6.320kA.all.root \
         /work4/ppd/picker24/nd280/inputs/maxint/ND6.320kA.all-A25-basket.maxint.root \
-        ${POT}
+        ${POT} N6A25
 
 NUMC_FILE=$(/work4/ppd/picker24/nd280/scripts/batch/utils/findnumc)
 

@@ -12,6 +12,20 @@ if [ -z "${SLURM_JOB_ACCOUNT}" ]; then
 	SLURM_LOCALID=123
 fi
 
+JOB_SCRIPT=$(readlink -f ${1})
+echo "JOB SCRIPT: ${1} resolved to: ${JOB_SCRIPT}"
+if [ ! -e ${JOB_SCRIPT} ] || [ -z "${JOB_SCRIPT}" ]; then
+  echo "Failed to find JOB SCRIPT: ${1}. Cannot continue"
+  return 1
+fi
+shift;
+
+if [ ! -z "${SLURM_ARRAY_JOB_ID}" ]; then
+  mkdir -p ${SLURM_ARRAY_JOB_ID}; cd ${SLURM_ARRAY_JOB_ID}
+else
+  mkdir -p ${SLURM_JOB_ID}; cd ${SLURM_JOB_ID}
+fi
+
 export SUBDIR=$(pwd)
 
 if [ -e /scratch ]; then
@@ -20,6 +34,8 @@ else
   export JOBDIR=/tmp/${SLURM_JOB_ACCOUNT}_${SLURM_JOB_NAME}_${SLURM_JOB_ID}
 fi
 
+export SCRIPT_ROOT=$MYWORK4/nd280/scripts
+
 SECONDS=0
 echo "Job start: $(date)"
 
@@ -27,13 +43,10 @@ set -x
 mkdir -p ${JOBDIR}
 set +x
 
-JOB_SCRIPT=$(readlink -f ${1})
-shift;
-
-srun -o "%j.%t.log"  time $MYWORK4/nd280/scripts/env/apptainer.run ${JOB_SCRIPT} ${@}
+srun -o "%j.%t.log"  time ${SCRIPT_ROOT}/env/apptainer.run ${JOB_SCRIPT} ${@}
 
 set -x
 ls ${JOBDIR}/*
 rm -r ${JOBDIR}
 echo "Job end: $(date)"
-echo "Job elapsed: ${SECONDS}s"
+echo "Job elapsed: $(echo "${SECONDS} / 60" | bc)m $(echo "${SECONDS} % 60" | bc)s"

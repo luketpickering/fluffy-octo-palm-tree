@@ -8,14 +8,18 @@ MAXINT_FILE=${5}
 POT=${6}
 
 RUNNUM=${SLURM_JOB_ID}
-SRUNNUM=${SLURM_LOCALID}
+if [ ! -z "${SLURM_ARRAY_TASK_ID}" ]; then
+  SRUNNUM=${SLURM_ARRAY_TASK_ID}
+else
+  SRUNNUM=${SLURM_LOCALID}
+fi
 COMMENT=""
 
 if [ ${#} -gt 6 ]; then
   COMMENT=${7}
 fi
 
-SEEDS=( $(${MYWORK4}/nd280/scripts/batch/utils/rseeds.py 65534 3) )
+SEEDS=( $(${SCRIPT_ROOT}/batch/utils/rseeds.py 65534 3) )
 NEUT_SEED1=${SEEDS[0]}
 NEUT_SEED2=${SEEDS[1]}
 NEUT_SEED3=${SEEDS[2]}
@@ -42,5 +46,5 @@ echo "=====<<numc.cfg====="
 runND280 -c numc.cfg -t $(pwd)
 
 if [ ! -z "${SUBDIR}" ]; then
-	cp $(${MYWORK4}/nd280/scripts/batch/utils/findnumc) ${SUBDIR}/
+	cp $(${SCRIPT_ROOT}/batch/utils/findnumc) ${SUBDIR}/
 fi
