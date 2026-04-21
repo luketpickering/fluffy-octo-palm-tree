@@ -1,0 +1,9 @@
+#!/bin/bash
+for numc in $(ls -1 $1/*numc*.root); do 
+  tailstub=${numc##*oa_nt_beam_} 
+  rsr=${tailstub%%_*}
+  if [ ! -e $1/*${rsr}*anal*.root ]; then
+    RUNNUM=${rsr%%-*}
+    echo ${RUNNUM#*0}
+  fi
+done

@@ -4,6 +4,15 @@ if [ ! -z "${ND280_IMAGE}" ]; then
   IMG=${ND280_IMAGE}
 fi
 
+if [ ! -L /tmp/picker24local ]; then
+  if [ -e /tmp/picker24local ]; then
+    rm -r /tmp/picker24local
+  fi
+  ln -s $MYWORK4/nd280/picker24local /tmp/picker24local
+fi
+
+touch /tmp/picker24local/semaphores/inuse.$(hostname).${SLURM_JOB_ID}.${SLURM_LOCALID}
+
 if [ ! -z "${JOBDIR}" ]; then
 
   CWDOPT=${JOBDIR}
@@ -24,4 +33,10 @@ else
 	-B /scratch:/scratch \
 	${IMG} \
 		$MYWORK4/nd280/scripts/env/apptainer.run_in_local_nd280_env ${@}
+fi
+
+rm /tmp/picker24local/semaphores/inuse.$(hostname).${SLURM_JOB_ID}.${SLURM_LOCALID}
+
+if [ $( ls -1 /tmp/picker24local/semaphores/inuse.$(hostname).* 2> /dev/null | wc -l ) -eq 0 ]; then
+  rm /tmp/picker24local
 fi

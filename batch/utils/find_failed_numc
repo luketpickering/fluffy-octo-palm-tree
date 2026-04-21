@@ -1,0 +1,11 @@
+#!/bin/bash
+
+for log in $(ls -1 $1/*.log); do
+  LOGF=${log##*/}
+  JOBID=${LOGF%%.*}
+  RUNTAG=$(printf %08i ${JOBID})
+  if [ ! -e $1/*${RUNTAG}*numc*.root ]; then
+    echo "${JOBID}"
+  fi
+done
+

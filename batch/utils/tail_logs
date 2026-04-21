@@ -1,0 +1,14 @@
+#!/bin/bash
+
+ROOT=${1}
+shift
+
+while [ ${#} -gt 0 ]; do
+  for f in $(ls -1 ${ROOT}/${1}*.log); do
+    echo ">>>>>>>>>>>>>>>>${f}>>>>>>>>>>>>>>>"
+    tail ${f}
+    shift;
+    echo "<<<<<<<<<<<<<<<<${f}<<<<<<<<<<<<<<<"
+    break
+  done
+done

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+while IFS= read -r line ; do
+  tailstub=${line##*StepId=}
+  echo ${tailstub%%.*}
+done <<< "$(./find_failed_sim2ev ${1} | xargs ./tail_logs ${1} | grep "Some of the step tasks have been OOM Killed.")"
