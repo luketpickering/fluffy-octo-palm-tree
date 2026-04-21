@@ -3,9 +3,12 @@
 for log in $(ls -1 $1/*.log); do
   LOGF=${log##*/}
   JOBID=${LOGF%%.*}
+  TAILSTUB=${LOGF#*.}
+  TASKID=${TAILSTUB%%.*}
   RUNTAG=$(printf %08i ${JOBID})
-  if [ ! -e $1/*${RUNTAG}*numc*.root ]; then
-    echo "${JOBID}"
+  SRUNTAG=$(printf %04i ${TASKID})
+  if [ ! -e $1/*${RUNTAG}-${SRUNTAG}*numc*.root ]; then
+    echo "${JOBID}.${TASKID}"
   fi
 done
 

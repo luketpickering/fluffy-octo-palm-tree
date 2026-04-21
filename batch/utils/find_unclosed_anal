@@ -4,5 +4,6 @@ while IFS= read -r line ; do
   tailstub=${line##*oa_nt_beam_}
   rsr=${tailstub%%_*}
   RUNNUM=${rsr%%-*}
-  echo ${RUNNUM#*0}
+  SRUNNUM=${rsr##*-}
+  echo "$((10#${RUNNUM})).$((10#${SRUNNUM}))"
 done <<< "$($MYWORK4/nd280/scripts/env/apptainer.run root -l -q ${1}/*anal*.root 2>&1 | grep "probably not closed, trying to recover")"

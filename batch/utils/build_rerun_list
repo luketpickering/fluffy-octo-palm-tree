@@ -1,0 +1,21 @@
+#!/bin/bash
+
+ROOT=${1}
+shift
+STAGE=${1}
+shift
+
+while [ ${#} -gt 0 ]; do
+  RUNTAG=$(printf %08i ${1%%.*})
+  SRUNTAG=$(printf %04i ${1##*.})
+  f=${ROOT}/*${RUNTAG}-${SRUNTAG}*${STAGE}*.root
+  if [ ! -e ${f} ]; then
+    f=${ROOT}/*${RUNTAG}*${STAGE}*.root
+  fi
+  if [ -e ${f} ]; then
+    echo $f
+  else
+    >&2 echo "Failed to find file for: ${RUNTAG}_${SRUNTAG} at stage: ${STAGE}."
+  fi
+  shift;
+done

@@ -5,9 +5,11 @@
 export NEUT_CRSPATH=/work4/ppd/picker24/nd280/inputs/crsdat
 
 POT=${1}
+T2K_RUN=13
 
 /work4/ppd/picker24/nd280/scripts/batch/stubs/numc \
-        /work4/ppd/picker24/nd280/inputs/neut_cards/NIWG_A25-lowmem.toml \
+        ${ND280_JOB_ID} ${ND280_TASK_ID} \
+	/work4/ppd/picker24/nd280/inputs/neut_cards/NIWG_A25-lowmem.toml \
         Basket magnet \
         /work4/ppd/picker24/nd280/inputs/fluxes/ND6.320kA.all.root \
         /work4/ppd/picker24/nd280/inputs/maxint/ND6.320kA.all-A25-basket.maxint.root \

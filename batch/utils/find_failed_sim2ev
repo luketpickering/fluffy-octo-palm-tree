@@ -4,6 +4,7 @@ for numc in $(ls -1 $1/*numc*.root); do
   rsr=${tailstub%%_*}
   if [ ! -e $1/*${rsr}*anal*.root ]; then
     RUNNUM=${rsr%%-*}
-    echo ${RUNNUM#*0}
+    SRUNNUM=${rsr##*-}
+    echo "$((10#${RUNNUM})).$((10#${SRUNNUM}))"
   fi
 done
