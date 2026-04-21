@@ -1,9 +1,24 @@
 #!/bin/bash
 
 NEUT_CARD=${1}
-NUMC_FILE=${2}
+INFILE=${2}
 MAXINT_FILE=${3}
 T2K_RUN=${4}
+
+if [ "${INFILE##*.}" == "root" ]; then
+  NUMC_FILE=${INFILE}
+else
+  NUMC_FILE_LOC=$(cat ${INFILE} | head -${ND280_TASK_ID} | tail -1)
+  cp ${NUMC_FILE_LOC} ./
+  NUMC_FILE=${NUMC_FILE_LOC##*/}
+fi
+
+echo "Attempting to run with NUMC_FILE=${NUMC_FILE}"
+
+if [ -z "${NUMC_FILE}" ]; then
+  echo "No input NUMC file passed."
+  return 1
+fi
 
 SEEDS=( $(${SCRIPT_ROOT}/batch/utils/rseeds.py 65534 5) )
 NEUT_SEED1=${SEEDS[0]}
@@ -50,7 +65,7 @@ if [ ! -z "${SUBDIR}" ]; then
     cp *g4mc*.mac ${SUBDIR}/
   fi
 
-  if [ ! -z "${KEEP_elmc}" ] || [ ${EXIT_STATUS} -ne 0 ]; then
+  if [ ! -z "${KEEP_ELMC}" ] || [ ${EXIT_STATUS} -ne 0 ]; then
     cp *elmc*.root ${SUBDIR}/
   fi
 

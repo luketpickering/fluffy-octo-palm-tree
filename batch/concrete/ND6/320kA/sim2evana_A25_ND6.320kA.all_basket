@@ -3,23 +3,10 @@
 export NEUT_CRSPATH=/work4/ppd/picker24/nd280/inputs/crsdat
 
 INFILE=${1}
-if [ "${INFILE##*.}" == "root" ]; then
-  NUMC_FILE=${INFILE}
-else
-  NUMC_FILE=$(cat ${INFILE} | head -${ND280_TASK_ID} | tail -1)
-fi
-
-echo "Attempting to run with NUMC_FILE=${NUMC_FILE}"
-
-if [ -z "${NUMC_FILE}" ]; then
-  echo "No input NUMC file passed."
-  return 1
-fi
-
 T2K_RUN=13
 
 /work4/ppd/picker24/nd280/scripts/batch/stubs/sim2evana \
 	/work4/ppd/picker24/nd280/inputs/neut_cards/NIWG_A25-lowmem.toml \
-	${NUMC_FILE} \
+	${INFILE} \
 	/work4/ppd/picker24/nd280/inputs/maxint/ND6.320kA.all-A25-basket.maxint.root \
 	${T2K_RUN}

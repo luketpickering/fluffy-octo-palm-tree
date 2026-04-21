@@ -1,8 +1,7 @@
 #!/bin/bash
-
 #SBATCH -p scarf
 #SBATCH -n 1
-#SBATCH -o %J.log
+#SBATCH -o %A/%J.log
 #SBATCH -J nd280job
 
 if [ -z "${SLURM_JOB_ACCOUNT}" ]; then

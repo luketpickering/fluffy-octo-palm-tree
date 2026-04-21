@@ -12,7 +12,7 @@ while IFS= read -r line ; do
 
   tail ${f} | grep --silent "Some of the step tasks have been OOM Killed."
   FOUND=${PIPESTATUS[1]}
-  if [ ${FOUND} -eq 0 ]; then
+  if [ ${FOUND} -eq 1 ]; then
     echo "${RUNNUM}.${SRUNNUM}"
   fi
 

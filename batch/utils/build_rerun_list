@@ -13,7 +13,7 @@ while [ ${#} -gt 0 ]; do
     f=${ROOT}/*${RUNTAG}*${STAGE}*.root
   fi
   if [ -e ${f} ]; then
-    echo $f
+    echo $(readlink -f $f)
   else
     >&2 echo "Failed to find file for: ${RUNTAG}_${SRUNTAG} at stage: ${STAGE}."
   fi
