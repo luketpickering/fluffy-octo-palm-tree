@@ -5,8 +5,6 @@
 export NEUT_CRSPATH=/work4/ppd/picker24/nd280/inputs/crsdat
 
 POT=${1}
-BEAM_POWER=620
-CYCLE_TIME=1.52
 
 /work4/ppd/picker24/nd280/scripts/batch/stubs/numc \
         /work4/ppd/picker24/nd280/inputs/neut_cards/NIWG_A25-lowmem.toml \
@@ -21,4 +19,4 @@ NUMC_FILE=$(/work4/ppd/picker24/nd280/scripts/batch/utils/findnumc)
 	/work4/ppd/picker24/nd280/inputs/neut_cards/NIWG_A25-lowmem.toml \
 	${NUMC_FILE} \
 	/work4/ppd/picker24/nd280/inputs/maxint/ND6.320kA.all-A25-basket.maxint.root \
-	${BEAM_POWER} ${CYCLE_TIME}
+	${T2K_RUN}

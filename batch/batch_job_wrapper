@@ -20,11 +20,16 @@ if [ ! -e ${JOB_SCRIPT} ] || [ -z "${JOB_SCRIPT}" ]; then
 fi
 shift;
 
-if [ ! -z "${SLURM_ARRAY_JOB_ID}" ]; then
-  mkdir -p ${SLURM_ARRAY_JOB_ID}; cd ${SLURM_ARRAY_JOB_ID}
+# try and make array and multistep job output look equivalent
+if [ ! -z "${SLURM_ARRAY_TASK_ID}" ]; then
+  export ND280_JOB_ID=${SLURM_ARRAY_JOB_ID}
+  OUTPUT_PATTERN="%A.%a.log"
 else
-  mkdir -p ${SLURM_JOB_ID}; cd ${SLURM_JOB_ID}
+  export ND280_JOB_ID=${SLURM_JOB_ID}
+  OUTPUT_PATTERN="%j.%t.log"
 fi
+
+mkdir -p ${ND280_JOB_ID}; cd ${ND280_JOB_ID}
 
 export SUBDIR=$(pwd)
 
@@ -43,7 +48,7 @@ set -x
 mkdir -p ${JOBDIR}
 set +x
 
-srun -o "%j.%t.log"  time ${SCRIPT_ROOT}/env/apptainer.run ${JOB_SCRIPT} ${@}
+srun -o "${OUTPUT_PATTERN}" ${SCRIPT_ROOT}/env/apptainer.run ${SCRIPT_ROOT}/batch/task_wrapper ${JOB_SCRIPT} ${@}
 
 set -x
 ls ${JOBDIR}/*

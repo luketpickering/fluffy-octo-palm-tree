@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ ! -z "${SLURM_ARRAY_TASK_ID}" ]; then
+  export ND280_TASK_ID=${SLURM_ARRAY_TASK_ID}
+else
+  export ND280_TASK_ID=$(( ${SLURM_LOCALID} + 1 ))
+fi
+
+${@}

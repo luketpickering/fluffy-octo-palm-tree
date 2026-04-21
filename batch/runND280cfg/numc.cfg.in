@@ -1,0 +1,36 @@
+[software]
+nd280ver = nd280neut6dev
+neut_setup_script = /work4/ppd/picker24/nd280/scripts/utils/dummy.setup
+
+[configuration]
+module_list = neutMC
+
+[filenaming]
+run_number = __RUNNUM__
+subrun = __SRUNNUM__
+replace_comment = 1
+comment = __COMMENT__
+
+[geometry]
+baseline = 2024
+
+[neutrino]
+neut_card = __NEUT_CARD__
+neutrino_type = beam
+master_volume = __INT_REGION__
+flux_region = __FLUX_REGION__
+flux_file = __FLUX_FILE__
+maxint_file = __MAXINT_FILE__
+neut_seed1 = __NEUT_SEED1__
+neut_seed2 = __NEUT_SEED2__
+neut_seed3 = __NEUT_SEED3__
+pot = __POT__
+random_start = 1
+
+[nd280Geant4Sim]
+mc_type = Neut_RooTracker
+
+[analysis]
+production = 1
+save_geometry = 1
+

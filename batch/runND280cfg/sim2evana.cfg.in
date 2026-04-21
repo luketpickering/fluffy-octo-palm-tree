@@ -1,0 +1,49 @@
+[software]
+nd280ver = nd280neut6dev
+neut_setup_script = /work4/ppd/picker24/nd280/scripts/utils/dummy.setup
+
+[configuration]
+module_list = nd280Geant4Sim detResponseSim eventCalibMC eventRecon eventAnalysis
+inputfile = __NUMC_FILE__
+
+[geometry]
+baseline = 2024
+
+[neutrino]
+neut_card = __NEUT_CARD__
+
+[nd280Geant4Sim]
+tagfilename = blank.txt
+neut_seed1 = __NEUT_SEED1__
+neut_seed2 = __NEUT_SEED2__
+neut_seed3 = __NEUT_SEED3__
+physicslist = ND280_QGSP_BERT_HP 
+hpneutrons = ENDF-VIII.0
+
+# use all the ints in the numc file, which
+# runs for fixed POT
+num_events = 999999999999
+mc_type = Neut_RooTracker
+random_seed = __G4_SEED__
+nbunches = 8
+interactions_per_spill = __IPS__
+pot_per_spill = __PPS__
+bunch_duration = 30 
+mc_full_spill = 1
+time_offset = 50
+count_type = MEAN
+mc_position = free
+
+[reconstruction]
+sfgdBadChannelTable = bad_channels_20240530_20240705.dat
+
+[electronics]
+random_seed = __ELECSIM_SEED__
+
+[analysis]
+production = 1
+save_geometry = 1
+
+[dead_channels]
+tpc_periods_to_activate = run7
+ecal_periods_to_activate = 2020-01-06

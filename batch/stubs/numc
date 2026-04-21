@@ -1,22 +1,17 @@
 #!/bin/bash
 
-NEUT_CARD=${1}
-INT_REGION=${2}
-FLUX_REGION=${3}
-FLUX_FILE=${4}
-MAXINT_FILE=${5}
-POT=${6}
+RUNNUM=${1}
+SRUNNUM=${2}
+NEUT_CARD=${3}
+INT_REGION=${4}
+FLUX_REGION=${5}
+FLUX_FILE=${6}
+MAXINT_FILE=${7}
+POT=${8}
 
-RUNNUM=${SLURM_JOB_ID}
-if [ ! -z "${SLURM_ARRAY_TASK_ID}" ]; then
-  SRUNNUM=${SLURM_ARRAY_TASK_ID}
-else
-  SRUNNUM=${SLURM_LOCALID}
-fi
 COMMENT=""
-
-if [ ${#} -gt 6 ]; then
-  COMMENT=${7}
+if [ ${#} -gt 8 ]; then
+  COMMENT=${9}
 fi
 
 SEEDS=( $(${SCRIPT_ROOT}/batch/utils/rseeds.py 65534 3) )
@@ -24,7 +19,7 @@ NEUT_SEED1=${SEEDS[0]}
 NEUT_SEED2=${SEEDS[1]}
 NEUT_SEED3=${SEEDS[2]}
 
-cat $MYWORK4/nd280/inputs/runND280cfg/numc.cfg.in \
+cat ${SCRIPT_ROOT}/batch/runND280cfg/numc.cfg.in \
 	| sed "s:__NEUT_CARD__:${NEUT_CARD}:g" \
 	| sed "s:__INT_REGION__:${INT_REGION}:g" \
 	| sed "s:__FLUX_REGION__:${FLUX_REGION}:g" \
@@ -46,5 +41,5 @@ echo "=====<<numc.cfg====="
 runND280 -c numc.cfg -t $(pwd)
 
 if [ ! -z "${SUBDIR}" ]; then
-	cp $(${SCRIPT_ROOT}/batch/utils/findnumc) ${SUBDIR}/
+  cp $(${SCRIPT_ROOT}/batch/utils/findnumc) ${SUBDIR}/
 fi

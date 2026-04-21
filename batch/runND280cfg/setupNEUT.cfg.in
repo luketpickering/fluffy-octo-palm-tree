@@ -1,0 +1,19 @@
+[software]
+nd280ver = nd280neut6dev
+neut_setup_script = /work4/ppd/picker24/nd280/scripts/utils/dummy.setup
+
+[configuration]
+module_list = neutSetup
+
+[geometry]
+baseline = 2024
+p0d_water_fill = 0
+
+[neutrino]
+neut_card = __NEUT_CARD__
+neutrino_type = beam
+master_volume = __INT_REGION__
+flux_region = __FLUX_REGION__
+flux_file = __FLUX_FILE__
+maxint_file = __MAXINT_FILE__
+random_start = 1

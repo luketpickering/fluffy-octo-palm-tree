@@ -1,0 +1,8 @@
+#!/bin/bash
+
+while IFS= read -r line ; do
+  tailstub=${line##*oa_nt_beam_}
+  rsr=${tailstub%%_*}
+  RUNNUM=${rsr%%-*}
+  echo ${RUNNUM#*0}
+done <<< "$($MYWORK4/nd280/scripts/env/apptainer.run root -l -q ${1}/*anal*.root 2>&1 | grep "probably not closed, trying to recover")"
